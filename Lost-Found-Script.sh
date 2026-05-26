@@ -37,10 +37,15 @@ $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
 
     echo "Adding user to docker group..."
     sudo usermod -aG docker ubuntu
-    sudo newgrp docker
+    
 }
 
 deploy_project(){
+    echo "Deploying project securely as 'ubuntu' user..."
+    
+    # INDUSTRY STANDARD QUICK FIX: Force a fresh login shell for the ubuntu user
+
+    cd /home/ubuntu
 
     if [ -d "Lost-and-Found-Platform-V2" ]; then
         echo "Repo exists → pulling latest changes"
@@ -52,10 +57,16 @@ deploy_project(){
     fi
 
     mkdir -p static
-
+    sudo chown -R ubuntu:ubuntu /home/ubuntu/Lost-and-Found-Platform-V2
+    
     echo "Starting containers..."
-    sudo docker compose up -d
+    sudo sg docker -c "docker compose up -d"
+
 }
 
+# Run the execution
 install_docker
 deploy_project
+
+# Force SSH to cycle so your terminal session immediately recognizes the group change
+sudo systemctl restart ssh
