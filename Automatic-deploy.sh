@@ -37,6 +37,7 @@ $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
 
     echo "Adding user to docker group..."
     sudo usermod -aG docker ubuntu
+    sudo newgrp docker
 }
 
 deploy_project(){
