@@ -1,2 +1,4 @@
 # Linux-Automation-Toolkit
-Bash Scripting for Linux
+This repository contains bash scripts for deploying my projects.
+
+These are mainly used in **user_data** while provisioning EC2 instances in AWS Cloud. 
